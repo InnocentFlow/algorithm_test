@@ -19,9 +19,11 @@ func LongestCommonSubseqOutput(text1 string, text2 string) string {
 		r1, r2 = r2, r1
 	}
 
-	dp := make([][]int, len(r1)+1)
+	h := len(r1)
+	w := len(r2)
+	dp := make([][]int, h+1)
 	for idx := range dp {
-		dp[idx] = make([]int, len(r2)+1)
+		dp[idx] = make([]int, w+1)
 	}
 
 	for x, char1 := range r1 {
@@ -34,11 +36,11 @@ func LongestCommonSubseqOutput(text1 string, text2 string) string {
 		}
 	}
 
-	resChar := make([]string, dp[len(r1)][len(r2)])
+	resChar := make([]string, dp[h][w])
 	currentL := dp[len(r1)][len(r2)]
-loop:
-	for i := len(r1); i > 0; {
-		for j := len(r2); j > 0; {
+
+	for i := h; i > 0 && currentL > 0; {
+		for j := w; j > 0 && currentL > 0; {
 			if dp[i-1][j] == currentL {
 				i--
 			} else if dp[i][j-1] == currentL {
@@ -48,9 +50,6 @@ loop:
 				currentL--
 				i--
 				j--
-			}
-			if currentL == 0 {
-				break loop
 			}
 		}
 	}
